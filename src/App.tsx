@@ -1,7 +1,10 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMicrophone} from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
 
 export default function App() {
+
+  const [isRecording, setIsRecording] = useState(false)
 
   return (
     <div className="bg-white">
@@ -19,10 +22,13 @@ export default function App() {
                   Check your speaking skills!
                 </h1>
                 <div className="mt-8 flex items-center justify-center gap-x-6">
-                  <a href="#"
-                     className="rounded-full bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
+                  <button
+                    onClick={() => {
+                      setIsRecording(!isRecording)
+                    }}
+                    className={`rounded-full bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 cursor-pointer ${isRecording && "recording-in-progress"}`}>
                     <FontAwesomeIcon icon={faMicrophone} style={{fontSize: "40px"}}/>
-                  </a>
+                  </button>
                 </div>
                 <p className="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
                   Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt

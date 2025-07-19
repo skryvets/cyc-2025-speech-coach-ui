@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+.recording-in-progress {
+    animation-name: pulse;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 5px 0 rgba(97, 95, 255, .3);
+    }
+    65% {
+        box-shadow: 0 0 5px 20px rgba(97, 95, 255, .3);
+    }
+    90% {
+        box-shadow: 0 0 5px 20px rgba(97, 95, 255, 0);
+    }
+}
