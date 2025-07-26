@@ -1,10 +1,14 @@
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMicrophone} from "@fortawesome/free-solid-svg-icons";
-import {useState} from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import { useAudioRecorder } from "./hooks/useAudioRecorder";
 
 export default function App() {
 
-  const [isRecording, setIsRecording] = useState(false)
+  const {
+    isRecording,
+    startRecording,
+    stopRecording,
+  } = useAudioRecorder();
 
   return (
     <div className="bg-white">
@@ -24,10 +28,14 @@ export default function App() {
                 <div className="mt-8 flex items-center justify-center gap-x-6">
                   <button
                     onClick={() => {
-                      setIsRecording(!isRecording)
+                      if (!isRecording) {
+                        startRecording()
+                      } else {
+                        stopRecording()
+                      }
                     }}
                     className={`rounded-full bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 cursor-pointer ${isRecording && "recording-in-progress"}`}>
-                    <FontAwesomeIcon icon={faMicrophone} style={{fontSize: "40px"}}/>
+                    <FontAwesomeIcon icon={faMicrophone} style={{ fontSize: "40px" }} />
                   </button>
                 </div>
                 <p className="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
