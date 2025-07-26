@@ -29,7 +29,7 @@ export const useAudioRecorder = () => {
 
   const sendAudioChunk = useCallback(async (audioData: Blob) => {
     try {
-      const response = await fetch('/transcribe', {
+      const response = await fetch('http://localhost:8080/transcribe', {
         method: 'POST',
         body: audioData,
         headers: {
@@ -62,7 +62,6 @@ export const useAudioRecorder = () => {
         console.log("Recorder state:", mediaRecorderRef.current.state);
       }
 
-      await cleanup();
       console.log("Recording stopped successfully");
 
     } catch (error) {
@@ -70,7 +69,7 @@ export const useAudioRecorder = () => {
       const e = error as Error;
       setError(`Failed to stop recording: ${e.message}`);
     }
-  }, [cleanup]);
+  }, []);
 
   const setupMediaRecorderHandlers = useCallback((mediaRecorder: MediaRecorder) => {
     mediaRecorder.ondataavailable = async (event: BlobEvent) => {
@@ -83,10 +82,11 @@ export const useAudioRecorder = () => {
       }
     };
 
-    mediaRecorder.onstop = () => {
+    mediaRecorder.onstop = async () => {
       console.log("MediaRecorder stopped");
       setIsRecording(false);
       setRecordingState('inactive');
+      await cleanup();
     };
 
     mediaRecorder.onerror = async (event) => {
@@ -99,7 +99,7 @@ export const useAudioRecorder = () => {
       console.log("MediaRecorder started");
       setRecordingState('recording');
     };
-  }, [sendAudioChunk, stopRecording]);
+  }, [sendAudioChunk, stopRecording, cleanup]);
 
 
   const startRecording = useCallback(async () => {
@@ -113,7 +113,7 @@ export const useAudioRecorder = () => {
         throw new Error("getUserMedia not supported on your browser!");
       }
 
-      setError(null);
+      // setError(null);
       console.log("Starting recording...");
 
       // Get user media stream
@@ -128,7 +128,8 @@ export const useAudioRecorder = () => {
       setupMediaRecorderHandlers(mediaRecorderRef.current);
 
       // Start recording with 1.5 second chunks
-      mediaRecorderRef.current.start(1500);
+      // mediaRecorderRef.current.start(1500);
+      mediaRecorderRef.current.start();
       setIsRecording(true);
 
       console.log("Recorder started successfully");
